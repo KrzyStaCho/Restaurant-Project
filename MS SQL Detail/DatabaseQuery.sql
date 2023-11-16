@@ -45,6 +45,23 @@ CREATE TABLE AccountGroupPerm (
 	FOREIGN KEY(GroupID) REFERENCES AccountGroup(GroupID),
 	FOREIGN KEY(PermissionID) REFERENCES Permission(PermissionID))
 
+CREATE OR ALTER TRIGGER RemoveAccountTrigger ON Password
+AFTER DELETE AS
+	DECLARE @accountID INT
+	DECLARE @groupID INT
+	DECLARE @username NVARCHAR(50)
+	DECLARE @pass NVARCHAR(MAX)
+	DECLARE @groupName NVARCHAR(50)
+	DECLARE @lastOnline DATE
+	SET @accountID = (SELECT AccountID FROM deleted)
+	SET @groupID = (SELECT GroupID FROM Account WHERE AccountID = @accountID)
+	SET @username = (SELECT Username FROM Account WHERE AccountID = @accountID)
+	SET @pass = (SELECT Value FROM deleted)
+	SET @groupName = (SELECT GroupName FROM AccountGroup WHERE GroupID = @groupID)
+	SET @lastOnline = (SELECT LastOnline FROM Account WHERE AccountID = @accountID)
+	INSERT INTO AccountArchive (Username, Password, GroupName, LastOnline, AccountID) VALUES (@username, @pass, @groupName, @lastOnline, @accountID)
+	DELETE FROM Account WHERE AccountID = @accountID
+
 INSERT INTO AccountGroup (GroupName, IsAdmin, CanChanged, WhoChanged) VALUES (N'System Admin', 1, 0, N'SysAdmin')
 INSERT INTO Account (Username, GroupID, CanChanged, WhoChanged) VALUES (N'SysAdmin', 1, 0, N'SysAdmin')
 INSERT INTO Password (AccountID, Value, CanChanged, WhoChanged) VALUES (1, N'jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=', 1, N'SysAdmin')
