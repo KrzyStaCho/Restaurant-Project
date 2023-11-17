@@ -5,17 +5,33 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>MVVM\View\Image\ProductIcon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="MVVM\View\Image\Product.png" />
+    <None Remove="MVVM\View\Image\ProductIcon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="MVVM\View\Image\Product.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MVVM\View\Image\ProductIcon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ProjectLibrary\ProjectLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="MVVM\Model\" />
-    <Folder Include="MVVM\ViewModel\Core\" />
-    <Folder Include="MVVM\View\Image\" />
-    <Folder Include="MVVM\View\Style\" />
+    <Folder Include="MVVM\Helper\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FontAwesome5" Version="2.1.11" />
   </ItemGroup>
 
 </Project>
