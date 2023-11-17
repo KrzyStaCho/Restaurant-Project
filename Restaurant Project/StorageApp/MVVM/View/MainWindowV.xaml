@@ -4,10 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa="http://schemas.fontawesome.com/icons/"
-        xmlns:local="clr-namespace:StorageApp.MVVM.View"
+        xmlns:view="clr-namespace:StorageApp.MVVM.View"
         xmlns:viewmodel="clr-namespace:StorageApp.MVVM.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:MainWindowVM}"
         mc:Ignorable="d" Icon="Image/ProductIcon.ico" Loaded="Window_Loaded"
         Title="Storage Application" Height="800" Width="1200" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Window.Resources>
+        <ResourceDictionary Source="Style/MenuControlStyle.xaml"/>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <!-- Nav Side -->
@@ -24,9 +27,49 @@
         <!-- Nav Side -->
         <Border Grid.Column="0" Grid.Row="0" Style="{StaticResource NavSideBorder}">
             <Grid>
-                
+                <Grid.RowDefinitions>
+                    <!-- Logo -->
+                    <RowDefinition Height="120"/>
+                    <!-- Menu -->
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0" Style="{StaticResource LogoBorder}">
+                    <Image Source="Image/Product.png" Margin="0, 10"/>
+                </Border>
+                <ScrollViewer Grid.Row="1" Style="{StaticResource NavSideScroll}">
+                    <StackPanel Margin="10">
+                        <!-- Generating menu -->
+                        <ItemsControl ItemsSource="{Binding Menu}" Style="{StaticResource MenuControl}"/>
+                    </StackPanel>
+                </ScrollViewer>
             </Grid>
         </Border>
-        <Label Name="ActiveClock"/>
+        <!-- Content -->
+        <ContentControl Grid.Column="1" Grid.Row="0" Content="{Binding CurrentChildView}" d:Content=""/>
+        <!-- Bottom Panel -->
+        <Border Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Style="{StaticResource BottomPanelBorder}">
+            <StatusBar>
+                <!-- Working Clock and Date -->
+                <StatusBarItem>
+                    <StackPanel Orientation="Horizontal">
+                        <fa:ImageAwesome Icon="Regular_Clock"/>
+                        <Label Name="ActiveClock" Content="31/10/2023 12:00"/>
+                    </StackPanel>
+                </StatusBarItem>
+                <Separator/>
+                <!-- Active Username -->
+                <StatusBarItem>
+                    <StackPanel Orientation="Horizontal">
+                        <fa:ImageAwesome Icon="Regular_User"/>
+                        <Label Content="{Binding ActiveUsername}" d:Content="Head Admin"/>
+                    </StackPanel>
+                </StatusBarItem>
+                <Separator/>
+                <!-- App Version -->
+                <StatusBarItem FlowDirection="RightToLeft">
+                    <Label Content="{Binding FormatVersionText}" d:Content="Version 2.0"/>
+                </StatusBarItem>
+            </StatusBar>
+        </Border>
     </Grid>
 </Window>

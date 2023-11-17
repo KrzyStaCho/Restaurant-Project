@@ -18,4 +18,19 @@
     <Style x:Key="NavSideBorder" TargetType="Border">
         <Setter Property="Background" Value="{StaticResource UltraViolet}"/>
     </Style>
+    <Style x:Key="LogoBorder" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource PowderBlue}"/>
+        <Setter Property="Margin" Value="0, 10"/>
+    </Style>
+    <Style x:Key="BottomPanelBorder" TargetType="Border">
+        <Setter Property="BorderBrush" Value="{StaticResource EerieBlack}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="0"/>
+    </Style>
+
+    <Style x:Key="NavSideScroll" TargetType="ScrollViewer">
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>
+    </Style>
 </ResourceDictionary>
