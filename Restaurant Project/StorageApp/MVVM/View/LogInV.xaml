@@ -1,0 +1,70 @@
+﻿<UserControl x:Class="StorageApp.MVVM.View.LogInV"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
+             xmlns:view="clr-namespace:StorageApp.MVVM.View"
+             xmlns:viewmodel="clr-namespace:StorageApp.MVVM.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:LogInVM}"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1000" Background="LightGray">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!-- LogIn Form -->
+        <Border Grid.Column="1" Grid.Row="1" Style="{StaticResource LogInBorder}">
+            <Grid DataContext="{Binding FormModel}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Rectangle Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource LogInRectangle}"/>
+                <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="Image/Product.png" Style="{StaticResource LogInLogo}"/>
+                <Border Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Style="{StaticResource LogInFormBorder}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Content="Log In" Style="{StaticResource HeaderLabel}"/>
+                        <StackPanel Grid.Row="1" Style="{StaticResource CenteredPanel}">
+                            <!-- Username -->
+                            <Border Style="{StaticResource GrayLightBorder}">
+                                <StackPanel>
+                                    <Label Content="Username: " Style="{StaticResource FormLabel}"/>
+                                    <TextBox Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FormTextBox}"/>
+                                </StackPanel>
+                            </Border>
+                            <!-- Password -->
+                            <Border Style="{StaticResource GrayLightBorder}">
+                                <StackPanel>
+                                    <Label Content="Password: " Style="{StaticResource FormLabel}"/>
+                                    <TextBox Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FormTextBox}"/>
+                                </StackPanel>
+                            </Border>
+                            <!-- Error Message -->
+                            <TextBlock Text="{Binding Error}" Style="{StaticResource ErrorFormBlock}"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <!-- Confirm Button -->
+                <Button Grid.Column="1" Grid.Row="3" Command="{Binding ConfirmCommand}" Style="{StaticResource ConfirmFormButton}"/>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

@@ -30,7 +30,7 @@ namespace StorageApp.MVVM.Model
 
         private ActiveUserModel() { }
 
-        public static ActiveUserModel GetUserProfile(Account account, List<string> perms)
+        public static ActiveUserModel GetUserProfile(Account account)
         {
             ActiveUserModel profile = new ActiveUserModel();
             profile.Id = account.AccountId;
@@ -38,7 +38,7 @@ namespace StorageApp.MVVM.Model
             profile.GroupName = (account.Group == null) ? string.Empty : account.Group.GroupName;
             profile.IsAdmin = (account.Group == null) ? false : account.Group.IsAdmin;
             profile.LastOnline = account.LastOnline;
-            profile.permList = perms;
+            profile.permList = (account.Group == null) ? new List<string>() : account.Group.Permissions.Select(p => p.Code).ToList();
             profile.RawUserProfile = account;
 
             return profile;

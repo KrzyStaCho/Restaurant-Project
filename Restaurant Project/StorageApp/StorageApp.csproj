@@ -27,11 +27,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="MVVM\Helper\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="FontAwesome5" Version="2.1.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

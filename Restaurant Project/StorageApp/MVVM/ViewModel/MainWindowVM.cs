@@ -1,6 +1,7 @@
 ﻿using ProjectLibrary.Repository.Context;
 using StorageApp.MVVM.Model;
 using StorageApp.MVVM.Model.Menu;
+using StorageApp.MVVM.View;
 using StorageApp.MVVM.ViewModel.Core;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,32 @@ namespace StorageApp.MVVM.ViewModel
 
         #region Getter Child ViewModel
 
-        //TODO: ...
+        private LogInVM LogInViewModel
+        {
+            get
+            {
+                LogInVM? viewModel = FindInstanceVM<LogInVM>() as LogInVM;
+                if (viewModel == null)
+                {
+                    viewModel = new LogInVM();
+                    viewModelList.Add(viewModel);
+                }
+                return viewModel;
+            }
+        }
+        private DashboardVM DashboardViewModel
+        {
+            get
+            {
+                DashboardVM? viewModel = FindInstanceVM<DashboardVM>() as DashboardVM;
+                if (viewModel == null)
+                {
+                    viewModel = new DashboardVM();
+                    viewModelList.Add(viewModel);
+                }
+                return viewModel;
+            }
+        }
 
         #endregion
 
@@ -102,7 +128,33 @@ namespace StorageApp.MVVM.ViewModel
 
         #region Switch ViewModel
 
-        //TODO: ...
+        public ICommand SwitchToLogInView { get; }
+        public ICommand SwitchToDashboardView { get; }
+
+        private void ExecuteSwitchToLogIn(object? parameter)
+        {
+            if (CurrentChildView != null && CurrentChildView is LogInV) return;
+            var view = new LogInV();
+            var viewModel = LogInViewModel;
+            view.DataContext = viewModel;
+            CurrentChildView = view;
+
+            if (ActiveUser != null) { ActiveUser = null; }
+        }
+        private void ExecuteSwitchToDashboard(object? parameter)
+        {
+            if (CurrentChildView != null && CurrentChildView is DashboardV) return;
+            var view = new DashboardV();
+            var viewModel = DashboardViewModel;
+            viewModel.LoadData();
+            view.DataContext = viewModel;
+            CurrentChildView = view;
+        }
+
+        private bool CanExecuteSwitchView(object? parameter)
+        {
+            return !(ActiveUser == null);
+        }
 
         #endregion
 
@@ -118,8 +170,8 @@ namespace StorageApp.MVVM.ViewModel
 
             List<SubItemMenu> menuStart = new List<SubItemMenu>()
             {
-                new SubItemMenu("Log in", emptyCommand),
-                new SubItemMenu("Dashboard", emptyCommand)
+                new SubItemMenu("Log in", SwitchToLogInView),
+                new SubItemMenu("Dashboard", SwitchToDashboardView)
             };
             ItemMenu menu0 = new ItemMenu("Start", menuStart, HomeIconName);
 
@@ -148,11 +200,13 @@ namespace StorageApp.MVVM.ViewModel
 
             #region Init Commands
 
-            //TODO: ...
+            SwitchToLogInView = new BaseCommand(ExecuteSwitchToLogIn);
+            SwitchToDashboardView = new BaseCommand(ExecuteSwitchToDashboard, CanExecuteSwitchView);
 
             #endregion
 
             LoadMenuItem();
+            SwitchToLogInView.Execute(null);
         }
     }
 }

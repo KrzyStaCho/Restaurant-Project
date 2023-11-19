@@ -27,10 +27,168 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="0"/>
     </Style>
+    <Style x:Key="LogInBorder" TargetType="Border">
+        <Setter Property="BorderBrush" Value="{StaticResource UltraViolet}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="CornerRadius" Value="0, 0, 15, 15"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="LogInFormBorder" TargetType="Border" BasedOn="{StaticResource LogInBorder}">
+        <Setter Property="Background" Value="{StaticResource AntiFlashWhite}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource EerieBlack}"/>
+    </Style>
+    <Style x:Key="GrayLightBorder" TargetType="Border">
+        <Setter Property="BorderBrush" Value="Gray"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="0"/>
+        <Setter Property="Margin" Value="0, 5"/>
+    </Style>
+    <Style x:Key="DashboardItemBorder" TargetType="Border">
+        <Setter Property="Background" Value="{Binding Path=Tag, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+        <Setter Property="CornerRadius" Value="20"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="Margin" Value="20, 10"/>
+    </Style>
+    <Style x:Key="DashboardInheritBorder" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource AntiFlashWhite}"/>
+        <Setter Property="CornerRadius" Value="20"/>
+        <Setter Property="Padding" Value="5"/>
+    </Style>
+
+    <Style x:Key="CenteredPanel" TargetType="StackPanel">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="10"/>
+    </Style>
+    <Style x:Key="MiddleCenteredPanel" TargetType="StackPanel" BasedOn="{StaticResource CenteredPanel}">
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="LogInRectangle" TargetType="Rectangle">
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="Stretch" Value="UniformToFill"/>
+        <Setter Property="Fill">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#5E548E"/>
+                    <GradientStop Color="#B6C2D9" Offset="1"/>
+                    <GradientStop Color="#7F76AF" Offset="0.5"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="LogInLogo" TargetType="Image">
+        <Setter Property="Width" Value="100"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
 
     <Style x:Key="NavSideScroll" TargetType="ScrollViewer">
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
-        <Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Hidden"/>
+    </Style>
+
+    <Style x:Key="HeaderLabel" TargetType="Label">
+        <Setter Property="FontFamily" Value="{StaticResource MainFont}"/>
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="Gray"/>
+    </Style>
+    <Style x:Key="FormLabel" TargetType="Label">
+        <Setter Property="FontFamily" Value="{StaticResource MainFont}"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Foreground" Value="{StaticResource EerieBlack}"/>
+    </Style>
+    <Style x:Key="TitleLabel" TargetType="Label">
+        <Setter Property="FontFamily" Value="{StaticResource MainFont}"/>
+        <Setter Property="FontSize" Value="40"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="{Binding Path=Tag, RelativeSource={RelativeSource AncestorType=StackPanel}}"/>
+    </Style>
+
+    <Style x:Key="FormTextBox" TargetType="TextBox">
+        <Setter Property="Background" Value="{StaticResource PowderBlue}"/>
+        <Setter Property="Cursor" Value="IBeam"/>
+        <Setter Property="FontFamily" Value="{StaticResource MainFont}"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0, 5, 0, 0"/>
+        <Setter Property="Padding" Value="5"/>
+    </Style>
+
+    <Style x:Key="ConfirmFormButton" TargetType="Button">
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="Width" Value="200"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Background" Value="{StaticResource Azul}"/>
+        <Setter Property="Foreground" Value="{StaticResource AntiFlashWhite}"/>
+        <Setter Property="FontFamily" Value="{StaticResource MainFont}"/>
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="Tag" Value="Confirm"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="20">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <fa:ImageAwesome Icon="Solid_Wrench" Margin="5, 10" Foreground="{TemplateBinding Foreground}"/>
+                            <Label Content="{TemplateBinding Tag}" Style="{StaticResource FormLabel}" VerticalAlignment="Center" Foreground="{TemplateBinding Foreground}"/>
+                        </StackPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="SteelBlue"/>
+                <Setter Property="Cursor" Value="Hand"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{StaticResource BleuDeFrance}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="PowderBlue"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="ErrorFormBlock" TargetType="TextBlock">
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="FontFamily" Value="Montserrat"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="Foreground" Value="DarkRed"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="5"/>
+        <Style.Triggers>
+            <Trigger Property="Text" Value="">
+                <Setter Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="CenteredTextBlock" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource MainFont}"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Foreground" Value="{Binding Path=Tag, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
+    <Style x:Key="HeaderIcon" TargetType="fa:ImageAwesome">
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="Foreground" Value="{Binding Path=Tag, RelativeSource={RelativeSource AncestorType=StackPanel}}"/>
     </Style>
 </ResourceDictionary>
