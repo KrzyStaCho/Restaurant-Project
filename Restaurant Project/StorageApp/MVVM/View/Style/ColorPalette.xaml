@@ -9,4 +9,5 @@
     <SolidColorBrush x:Key="Azul" Color="#296EB4"/>
     <SolidColorBrush x:Key="SteelBlue" Color="#2D7AC8"/>
     <SolidColorBrush x:Key="BleuDeFrance" Color="#3785D2"/>
+    <SolidColorBrush x:Key="ImperialRed" Color="#EA484E"/>
 </ResourceDictionary>

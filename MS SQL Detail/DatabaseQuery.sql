@@ -45,7 +45,7 @@ CREATE TABLE AccountGroupPerm (
 	FOREIGN KEY(GroupID) REFERENCES AccountGroup(GroupID),
 	FOREIGN KEY(PermissionID) REFERENCES Permission(PermissionID))
 
-CREATE OR ALTER TRIGGER RemoveAccountTrigger ON Password
+CREATE TRIGGER RemoveAccountTrigger ON Password
 AFTER DELETE AS
 	DECLARE @accountID INT
 	DECLARE @groupID INT
@@ -65,4 +65,32 @@ AFTER DELETE AS
 INSERT INTO AccountGroup (GroupName, IsAdmin, CanChanged, WhoChanged) VALUES (N'System Admin', 1, 0, N'SysAdmin')
 INSERT INTO Account (Username, GroupID, CanChanged, WhoChanged) VALUES (N'SysAdmin', 1, 0, N'SysAdmin')
 INSERT INTO Password (AccountID, Value, CanChanged, WhoChanged) VALUES (1, N'jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=', 1, N'SysAdmin')
+*/
+
+/* Supplier Aspect
+
+CREATE TABLE Supplier (
+	SupplierID INT IDENTITY(1,1) PRIMARY KEY,
+	CompanyName NVARCHAR(50) NOT NULL,
+	ContactName NVARCHAR(50),
+	ContactTitle NVARCHAR(50),
+	Address NVARCHAR(60),
+	City NVARCHAR(20),
+	Phone NVARCHAR(24),
+	HomePage NVARCHAR(MAX))
+
+CREATE TABLE SupplierArchive (
+	CompanyName NVARCHAR(50) NOT NULL,
+	ContactName NVARCHAR(50),
+	ContactTitle NVARCHAR(50),
+	Address NVARCHAR(60),
+	City NVARCHAR(20),
+	Phone NVARCHAR(24),
+	HomePage NVARCHAR(MAX),
+	SupplierID INT NOT NULL,
+	ArchiveID INT IDENTITY(1,1) PRIMARY KEY)
+
+CREATE TRIGGER RemoveSupplierTrigger ON Supplier
+AFTER DELETE AS
+	INSERT INTO SupplierArchive (CompanyName, ContactName, ContactTitle, Address, City, Phone, HomePage, SupplierID) SELECT CompanyName, ContactName, ContactTitle, Address, City, Phone, HomePage, SupplierID FROM deleted
 */

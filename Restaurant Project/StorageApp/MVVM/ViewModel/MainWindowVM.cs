@@ -64,6 +64,19 @@ namespace StorageApp.MVVM.ViewModel
                 return viewModel;
             }
         }
+        private SupplierVM SupplierViewModel
+        {
+            get
+            {
+                SupplierVM? viewModel = FindInstanceVM<SupplierVM>() as SupplierVM;
+                if (viewModel == null)
+                {
+                    viewModel = new SupplierVM();
+                    viewModelList.Add(viewModel);
+                }
+                return viewModel;
+            }
+        }
 
         #endregion
 
@@ -130,6 +143,7 @@ namespace StorageApp.MVVM.ViewModel
 
         public ICommand SwitchToLogInView { get; }
         public ICommand SwitchToDashboardView { get; }
+        public ICommand SwitchToSupplierView { get; }
 
         private void ExecuteSwitchToLogIn(object? parameter)
         {
@@ -147,6 +161,14 @@ namespace StorageApp.MVVM.ViewModel
             var view = new DashboardV();
             var viewModel = DashboardViewModel;
             viewModel.LoadData();
+            view.DataContext = viewModel;
+            CurrentChildView = view;
+        }
+        private void ExecuteSwitchToSupplier(object? parameter)
+        {
+            if (CurrentChildView != null && CurrentChildView is SupplierV) return;
+            var view = new SupplierV();
+            var viewModel = SupplierViewModel;
             view.DataContext = viewModel;
             CurrentChildView = view;
         }
@@ -176,9 +198,18 @@ namespace StorageApp.MVVM.ViewModel
             ItemMenu menu0 = new ItemMenu("Start", menuStart, HomeIconName);
 
             #endregion
+            #region SupplyDelivery Menu
+
+            List<SubItemMenu> menuDelivery = new List<SubItemMenu>()
+            {
+                new SubItemMenu("Suppliers", SwitchToSupplierView)
+            };
+            ItemMenu menu2 = new ItemMenu("Supply", menuDelivery, NewspaperIconName);
+
+            #endregion
             //TODO: ...
 
-            _menu = new List<ItemMenu>() { menu0 };
+            _menu = new List<ItemMenu>() { menu0, menu2 };
             OnPropertyChanged(nameof(Menu));
         }
 
@@ -202,6 +233,7 @@ namespace StorageApp.MVVM.ViewModel
 
             SwitchToLogInView = new BaseCommand(ExecuteSwitchToLogIn);
             SwitchToDashboardView = new BaseCommand(ExecuteSwitchToDashboard, CanExecuteSwitchView);
+            SwitchToSupplierView = new BaseCommand(ExecuteSwitchToSupplier, CanExecuteSwitchView);
 
             #endregion
 

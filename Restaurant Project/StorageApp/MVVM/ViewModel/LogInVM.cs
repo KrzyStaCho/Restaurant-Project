@@ -19,12 +19,6 @@ namespace StorageApp.MVVM.ViewModel
         private MainWindowVM mainVM;
         private RestaurantEntity database;
 
-        #region Static Fields
-
-        private static readonly string LogInPermissionCode = "LogST";
-
-        #endregion
-
         #endregion
         #region Data Binding
 
@@ -45,7 +39,7 @@ namespace StorageApp.MVVM.ViewModel
             if (userProfile == null) { FormModel.Error = LogInForm.IncorrectDataError; return; }
 
             //Check if user can log in to application
-            if (!userProfile.HasPerm(LogInPermissionCode)) { FormModel.Error = LogInForm.IncorrectDataError; return; }
+            if (!userProfile.HasPerm(ProgramCode.LogInPermissionCode)) { FormModel.Error = LogInForm.IncorrectDataError; return; }
 
             //Update LastOnline properties
             userProfile.RawUserProfile.LastOnline = DateTime.Now.Date;

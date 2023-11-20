@@ -22,6 +22,8 @@ namespace ProjectLibrary.Repository.Context
         public virtual DbSet<AccountGroup> AccountGroups { get; set; } = null!;
         public virtual DbSet<Password> Passwords { get; set; } = null!;
         public virtual DbSet<Permission> Permissions { get; set; } = null!;
+        public virtual DbSet<Supplier> Suppliers { get; set; } = null!;
+        public virtual DbSet<SupplierArchive> SupplierArchives { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -94,6 +96,12 @@ namespace ProjectLibrary.Repository.Context
                     .HasForeignKey<Password>(d => d.AccountId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Password__Accoun__32E0915F");
+            });
+
+            modelBuilder.Entity<SupplierArchive>(entity =>
+            {
+                entity.HasKey(e => e.ArchiveId)
+                    .HasName("PK__Supplier__33A73E77B2D4241B");
             });
 
             OnModelCreatingPartial(modelBuilder);

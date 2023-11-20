@@ -14,6 +14,20 @@
         <Setter Property="BorderBrush" Value="DarkGray"/>
         <Setter Property="BorderThickness" Value="1"/>
     </Style>
+    <Style TargetType="DataGrid">
+        <Setter Property="AlternatingRowBackground" Value="{StaticResource PowderBlue}"/>
+        <Setter Property="AutoGenerateColumns" Value="False"/>
+        <Setter Property="CanUserAddRows" Value="False"/>
+        <Setter Property="CanUserDeleteRows" Value="False"/>
+        <Setter Property="CanUserResizeColumns" Value="False"/>
+        <Setter Property="CanUserResizeRows" Value="False"/>
+        <Setter Property="FontFamily" Value="{StaticResource MainFont}"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="SelectionMode" Value="Single"/>
+        <Setter Property="SelectionUnit" Value="FullRow"/>
+        <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+    </Style>
 
     <Style x:Key="NavSideBorder" TargetType="Border">
         <Setter Property="Background" Value="{StaticResource UltraViolet}"/>
@@ -58,6 +72,13 @@
         <Setter Property="CornerRadius" Value="20"/>
         <Setter Property="Padding" Value="5"/>
     </Style>
+    <Style x:Key="ButtonPanelBorder" TargetType="Border">
+        <Setter Property="BorderBrush" Value="{StaticResource EerieBlack}"/>
+        <Setter Property="BorderThickness" Value="2, 2, 0, 2"/>
+        <Setter Property="CornerRadius" Value="50, 0, 0, 50"/>
+        <Setter Property="Margin" Value="20, 10, 0, 10"/>
+        <Setter Property="Padding" Value="5, 20"/>
+    </Style>
 
     <Style x:Key="CenteredPanel" TargetType="StackPanel">
         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -65,6 +86,12 @@
     </Style>
     <Style x:Key="MiddleCenteredPanel" TargetType="StackPanel" BasedOn="{StaticResource CenteredPanel}">
         <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="SearchBoxPanel" TargetType="StackPanel">
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="20, 0, 0, 0"/>
+        <Setter Property="Orientation" Value="Horizontal"/>
     </Style>
 
     <Style x:Key="LogInRectangle" TargetType="Rectangle">
@@ -90,6 +117,9 @@
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
         <Setter Property="VerticalScrollBarVisibility" Value="Hidden"/>
+    </Style>
+    <Style x:Key="DataGridScroll" TargetType="ScrollViewer" BasedOn="{StaticResource NavSideScroll}">
+        <Setter Property="Margin" Value="20"/>
     </Style>
 
     <Style x:Key="HeaderLabel" TargetType="Label">
@@ -124,6 +154,17 @@
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Margin" Value="0, 5, 0, 0"/>
         <Setter Property="Padding" Value="5"/>
+    </Style>
+    <Style x:Key="SearchBox" TargetType="TextBox">
+        <Setter Property="Background" Value="LightGray"/>
+        <Setter Property="Cursor" Value="IBeam"/>
+        <Setter Property="FontFamily" Value="{StaticResource MainFont}"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="Width" Value="150"/>
+        <Setter Property="Margin" Value="0, 5"/>
     </Style>
 
     <Style x:Key="ConfirmFormButton" TargetType="Button">
@@ -160,12 +201,67 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    <Style x:Key="SquareButton50" TargetType="Button">
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Width" Value="50"/>
+        <Setter Property="Height" Value="50"/>
+        <Setter Property="Background" Value="{StaticResource SteelBlue}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="5">
+                        <fa:ImageAwesome Icon="{Binding Path=Tag, RelativeSource={RelativeSource AncestorType=Button}}" Foreground="{StaticResource EerieBlack}" Margin="5"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource PowderBlue}"/>
+                <Setter Property="Cursor" Value="Hand"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{StaticResource Azul}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="SearchBoxButton" TargetType="Button" BasedOn="{StaticResource SquareButton50}">
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Width" Value="30"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="Background" Value="{StaticResource UltraViolet}"/>
+    </Style>
+    <Style x:Key="DataGridActionButton" TargetType="Button">
+        <Setter Property="Margin" Value="5, 2"/>
+        <Setter Property="Background" Value="{Binding Path=Tag, RelativeSource={RelativeSource Mode=Self}}"/>
+        <Setter Property="Foreground" Value="{StaticResource AntiFlashWhite}"/>
+        <Setter Property="FontFamily" Value="{StaticResource MainFont}"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="5">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Cursor" Value="Hand"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{StaticResource PowderBlue}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
     <Style x:Key="ErrorFormBlock" TargetType="TextBlock">
         <Setter Property="FontWeight" Value="Medium"/>
         <Setter Property="FontFamily" Value="Montserrat"/>
         <Setter Property="FontSize" Value="20"/>
-        <Setter Property="Foreground" Value="DarkRed"/>
+        <Setter Property="Foreground" Value="{StaticResource ImperialRed}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
@@ -185,6 +281,7 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextAlignment" Value="Center"/>
     </Style>
 
     <Style x:Key="HeaderIcon" TargetType="fa:ImageAwesome">
