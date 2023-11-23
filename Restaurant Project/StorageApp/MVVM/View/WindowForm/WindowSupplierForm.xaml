@@ -3,10 +3,92 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:StorageApp.MVVM.View.WindowForm"
-        mc:Ignorable="d"
-        Title="WindowSupplierForm" Height="450" Width="800">
+        xmlns:fa="http://schemas.fontawesome.com/icons/"
+        xmlns:windowForm="clr-namespace:StorageApp.MVVM.View.WindowForm"
+        xmlns:windowFormVM="clr-namespace:StorageApp.MVVM.ViewModel.WindowForm" d:DataContext="{d:DesignInstance Type=windowFormVM:WindowSupplierVM}"
+        mc:Ignorable="d" Icon="../Image/ProductIcon.ico"
+        Title="{Binding WindowTitle}" Height="400" Width="500" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Background="{StaticResource PowderBlue}">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <!-- Form Content -->
+            <RowDefinition Height="*"/>
+            <!-- Buttons -->
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <!-- Form Content -->
+        <TabControl Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Style="{StaticResource StandartFormTabControl}" DataContext="{Binding DataForm}">
+            <!-- Default data -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Tag="{StaticResource UltraViolet}" Style="{StaticResource TabPanel}">
+                        <fa:ImageAwesome Icon="Solid_Home" Style="{StaticResource TabIcon}"/>
+                        <TextBlock Text="Default" Style="{StaticResource TabTextBlock}"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <StackPanel VerticalAlignment="Center">
+                    <!-- Company Name -->
+                    <DockPanel Style="{StaticResource FormDockPanel}">
+                        <Label Content="Company Name: " Style="{StaticResource FormLabel}"/>
+                        <TextBox Text="{Binding CompanyName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource WhiteDockFormTextBox}"/>
+                    </DockPanel>
+                    <!-- Company NIP -->
+                    <DockPanel Style="{StaticResource FormDockPanel}">
+                        <Label Content="Company NIP: " Style="{StaticResource FormLabel}"/>
+                        <TextBox Text="{Binding CompanyNIP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource WhiteDockFormTextBox}"/>
+                    </DockPanel>
+                    <!-- Address -->
+                    <DockPanel Style="{StaticResource FormDockPanel}">
+                        <Label Content="Address: " Style="{StaticResource FormLabel}"/>
+                        <TextBox Text="{Binding Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource WhiteDockFormTextBox}"/>
+                    </DockPanel>
+                    <!-- City -->
+                    <DockPanel Style="{StaticResource FormDockPanel}">
+                        <Label Content="City: " Style="{StaticResource FormLabel}"/>
+                        <TextBox Text="{Binding City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource WhiteDockFormTextBox}"/>
+                    </DockPanel>
+                    <!-- ErrorBox -->
+                    <TextBlock Text="{Binding Error}" Style="{StaticResource ErrorFormBlock}"/>
+                </StackPanel>
+            </TabItem>
+            <!-- Contact data -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Tag="{StaticResource BleuDeFrance}" Style="{StaticResource TabPanel}">
+                        <fa:ImageAwesome Icon="Solid_Home" Style="{StaticResource TabIcon}"/>
+                        <TextBlock Text="Contact" Style="{StaticResource TabTextBlock}"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <StackPanel VerticalAlignment="Center">
+                    <!-- Contact Name -->
+                    <DockPanel Style="{StaticResource FormDockPanel}">
+                        <Label Content="Contact Name: " Style="{StaticResource FormLabel}"/>
+                        <TextBox Text="{Binding ContactName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource WhiteDockFormTextBox}"/>
+                    </DockPanel>
+                    <!-- Contact Title -->
+                    <DockPanel Style="{StaticResource FormDockPanel}">
+                        <Label Content="Contact Title: " Style="{StaticResource FormLabel}"/>
+                        <TextBox Text="{Binding ContactTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource WhiteDockFormTextBox}"/>
+                    </DockPanel>
+                    <!-- Phone -->
+                    <DockPanel Style="{StaticResource FormDockPanel}">
+                        <Label Content="Phone: " Style="{StaticResource FormLabel}"/>
+                        <TextBox Text="{Binding Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource WhiteDockFormTextBox}"/>
+                    </DockPanel>
+                    <!-- Home Page -->
+                    <DockPanel Style="{StaticResource FormDockPanel}">
+                        <Label Content="Home Page: " Style="{StaticResource FormLabel}"/>
+                        <TextBox Text="{Binding HomePage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource WhiteDockFormTextBox}"/>
+                    </DockPanel>
+                    <!-- ErrorBox -->
+                    <TextBlock Text="{Binding Error}" Style="{StaticResource ErrorFormBlock}"/>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+        <Button Grid.Column="0" Grid.Row="1" Content="Confirm" Tag="{StaticResource SteelBlue}" Style="{StaticResource FormButton}" Command="{Binding ConfirmData}"/>
+        <Button Grid.Column="1" Grid.Row="1" Content="Cancel" Tag="{StaticResource ImperialRed}" Style="{StaticResource FormButton}" Command="{Binding CloseCommand}"/>
     </Grid>
 </Window>

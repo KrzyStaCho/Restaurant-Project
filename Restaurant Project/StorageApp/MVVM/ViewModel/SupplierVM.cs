@@ -5,7 +5,9 @@ using ProjectLibrary.Repository.Entity;
 using StorageApp.MVVM.Helper;
 using StorageApp.MVVM.Model;
 using StorageApp.MVVM.Model.DataGrid;
+using StorageApp.MVVM.View.WindowForm;
 using StorageApp.MVVM.ViewModel.Core;
+using StorageApp.MVVM.ViewModel.WindowForm;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,7 +72,27 @@ namespace StorageApp.MVVM.ViewModel
         }
         private void ExecuteAddSupplier(object? parameter)
         {
-            //TODO: Add supplier
+            Window addWindow = new WindowSupplierForm();
+            Window owner = mainVM.GetWindow();
+            WindowSupplierVM addSupplierVM = new WindowSupplierVM(addWindow, owner);
+
+            addWindow.ShowDialog();
+
+            //Check if user confirm changes
+            if (!addSupplierVM.IsConfirmed) return;
+
+            //Add user info to supplier
+            Supplier toAddSupplier = addSupplierVM.DataForm.GetFilledSupplier();
+            toAddSupplier.WhoChanged = mainVM.ActiveUser.Username;
+            toAddSupplier.LastModified = DateTime.Now.Date;
+
+            //Add supplier to DB
+            database.Suppliers.Add(toAddSupplier);
+            mainVM.IncrementChangesInDB();
+            database.SaveChanges();
+
+            //Refresh data
+            RefreshData.Execute(null);
         }
         private void ExecuteEditSupplier(object? parameter)
         {
@@ -78,7 +100,26 @@ namespace StorageApp.MVVM.ViewModel
             if (!(parameter is SupplierModel)) return;
             SupplierModel model = (SupplierModel)parameter;
 
-            //TODO: Edit Supplier
+            Window editWindow = new WindowSupplierForm();
+            Window owner = mainVM.GetWindow();
+            WindowSupplierVM editSupplierVM = new WindowSupplierVM(editWindow, owner, model);
+
+            editWindow.ShowDialog();
+
+            //Check if user confirm changes
+            if (!editSupplierVM.IsConfirmed) return;
+
+            //Add user info to supplier
+            Supplier toEditSupplier = editSupplierVM.DataForm.GetFilledSupplier();
+            toEditSupplier.WhoChanged = mainVM.ActiveUser.Username;
+            toEditSupplier.LastModified = DateTime.Now.Date;
+
+            //Add supplier to DB
+            mainVM.IncrementChangesInDB();
+            database.SaveChanges();
+
+            //Refresh data
+            RefreshData.Execute(null);
         }
         private void ExecuteDeleteSupplier(object? parameter)
         {
@@ -97,6 +138,9 @@ namespace StorageApp.MVVM.ViewModel
 
             //Save changes
             database.SaveChanges();
+            mainVM.IncrementChangesInDB();
+
+            //Refresh data
             RefreshData.Execute(null);
         }
 

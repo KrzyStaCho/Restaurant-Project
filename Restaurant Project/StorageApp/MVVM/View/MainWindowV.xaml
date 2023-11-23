@@ -7,7 +7,7 @@
         xmlns:view="clr-namespace:StorageApp.MVVM.View"
         xmlns:viewmodel="clr-namespace:StorageApp.MVVM.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:MainWindowVM}"
         mc:Ignorable="d" Icon="Image/ProductIcon.ico" Loaded="Window_Loaded"
-        Title="Storage Application" Height="800" Width="1200" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="{Binding WindowTitle}" Height="800" Width="1200" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Window.Resources>
         <ResourceDictionary Source="Style/MenuControlStyle.xaml"/>
     </Window.Resources>
@@ -65,6 +65,13 @@
                     </StackPanel>
                 </StatusBarItem>
                 <Separator/>
+                <!-- Changes in database -->
+                <StatusBarItem>
+                    <StackPanel Orientation="Horizontal">
+                        <fa:ImageAwesome Icon="Solid_Database" Margin="0, 2"/>
+                        <Label Content="{Binding ChangesInDatabase}" d:Content="Changes in DB: 0"/>
+                    </StackPanel>
+                </StatusBarItem>
                 <!-- App Version -->
                 <StatusBarItem FlowDirection="RightToLeft">
                     <Label Content="{Binding FormatVersionText}" d:Content="Version 2.0"/>

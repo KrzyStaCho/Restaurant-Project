@@ -20,8 +20,12 @@ namespace ProjectLibrary.Repository.Context
         public virtual DbSet<Account> Accounts { get; set; } = null!;
         public virtual DbSet<AccountArchive> AccountArchives { get; set; } = null!;
         public virtual DbSet<AccountGroup> AccountGroups { get; set; } = null!;
+        public virtual DbSet<MeasureUnit> MeasureUnits { get; set; } = null!;
         public virtual DbSet<Password> Passwords { get; set; } = null!;
         public virtual DbSet<Permission> Permissions { get; set; } = null!;
+        public virtual DbSet<Product> Products { get; set; } = null!;
+        public virtual DbSet<ProductArchive> ProductArchives { get; set; } = null!;
+        public virtual DbSet<ProductCategory> ProductCategories { get; set; } = null!;
         public virtual DbSet<Supplier> Suppliers { get; set; } = null!;
         public virtual DbSet<SupplierArchive> SupplierArchives { get; set; } = null!;
 
@@ -82,6 +86,12 @@ namespace ProjectLibrary.Repository.Context
                         });
             });
 
+            modelBuilder.Entity<MeasureUnit>(entity =>
+            {
+                entity.HasKey(e => e.UnitId)
+                    .HasName("PK__MeasureU__44F5EC95DCCAABD9");
+            });
+
             modelBuilder.Entity<Password>(entity =>
             {
                 entity.HasKey(e => e.AccountId)
@@ -98,10 +108,44 @@ namespace ProjectLibrary.Repository.Context
                     .HasConstraintName("FK__Password__Accoun__32E0915F");
             });
 
+            modelBuilder.Entity<Product>(entity =>
+            {
+                entity.Property(e => e.LastModified).HasDefaultValueSql("(getdate())");
+
+                entity.HasOne(d => d.Category)
+                    .WithMany(p => p.Products)
+                    .HasForeignKey(d => d.CategoryId)
+                    .OnDelete(DeleteBehavior.SetNull)
+                    .HasConstraintName("FK__Product__Categor__6D0D32F4");
+
+                entity.HasOne(d => d.Supplier)
+                    .WithMany(p => p.Products)
+                    .HasForeignKey(d => d.SupplierId)
+                    .OnDelete(DeleteBehavior.SetNull)
+                    .HasConstraintName("FK__Product__Supplie__6E01572D");
+
+                entity.HasOne(d => d.Unit)
+                    .WithMany(p => p.Products)
+                    .HasForeignKey(d => d.UnitId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Product__UnitID__6C190EBB");
+            });
+
+            modelBuilder.Entity<ProductCategory>(entity =>
+            {
+                entity.HasKey(e => e.CategoryId)
+                    .HasName("PK__ProductC__19093A2B68C4C647");
+            });
+
+            modelBuilder.Entity<Supplier>(entity =>
+            {
+                entity.Property(e => e.LastModified).HasDefaultValueSql("(getdate())");
+            });
+
             modelBuilder.Entity<SupplierArchive>(entity =>
             {
                 entity.HasKey(e => e.ArchiveId)
-                    .HasName("PK__Supplier__33A73E77B2D4241B");
+                    .HasName("PK__Supplier__33A73E775497490C");
             });
 
             OnModelCreatingPartial(modelBuilder);

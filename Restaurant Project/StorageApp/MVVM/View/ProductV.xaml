@@ -1,0 +1,90 @@
+﻿<UserControl x:Class="StorageApp.MVVM.View.ProductV"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
+             xmlns:view="clr-namespace:StorageApp.MVVM.View"
+             xmlns:viewmodel="clr-namespace:StorageApp.MVVM.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:ProductVM}"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1000" Background="{StaticResource AntiFlashWhite}">
+    <UserControl.Resources>
+        <ResourceDictionary Source="Style/MenuControlStyle.xaml"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="120"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Style="{StaticResource LogoBorder}">
+            <StackPanel Tag="{StaticResource ImperialRed}" Orientation="Horizontal" Style="{StaticResource CenteredPanel}">
+                <fa:ImageAwesome Icon="Solid_Carrot" Style="{StaticResource HeaderIcon}"/>
+                <Label Content="Product Panel" Style="{StaticResource TitleLabel}"/>
+            </StackPanel>
+        </Border>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <!-- Category Panel -->
+                <ColumnDefinition Width="200"/>
+                <!-- Data Grid -->
+                <ColumnDefinition Width="*"/>
+                <!-- Button Panel -->
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <!-- SearchBox -->
+                <RowDefinition Height="50"/>
+                <!-- Other -->
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <!-- Search Box -->
+            <StackPanel Grid.Column="1" Grid.Row="0" Style="{StaticResource SearchBoxPanel}">
+                <TextBox Text="{Binding Searchbox, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SearchBox}"/>
+                <Button Tag="Solid_Search" Style="{StaticResource SearchBoxButton}" Command="{Binding SearchData}"/>
+            </StackPanel>
+            <!-- Category Panel -->
+            <ScrollViewer Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource NavSideScroll}">
+                <StackPanel Margin="10">
+                    <!-- Generating category button -->
+                    <ItemsControl ItemsSource="{Binding CategoryList}" Tag="{Binding FromCategoryData}" Style="{StaticResource CategorySelectControl}"/>
+                </StackPanel>
+            </ScrollViewer>
+            <!-- Data Grid -->
+            <ScrollViewer Grid.Column="1" Grid.Row="1" Style="{StaticResource DataGridScroll}">
+                <DataGrid ItemsSource="{Binding ProductList}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="#" MinWidth="20" Width="auto" Binding="{Binding ProductID}"/>
+                        <DataGridTextColumn Header="Name" Width="*" Binding="{Binding ProductName}"/>
+                        <DataGridTextColumn Header="In Stock" Width="*" Binding="{Binding InStock}"/>
+                        <DataGridTextColumn Header="Unit" Width="50" Binding="{Binding UnitCode}"/>
+                        <DataGridTextColumn Header="Category" Width="*" Binding="{Binding CategoryName}"/>
+                        <DataGridTextColumn Header="Supplier" Width="*" Binding="{Binding SupplierCompanyName}"/>
+                        <DataGridTemplateColumn Header="Action" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Button Grid.Column="0" Content="Edit" Tag="{StaticResource UltraViolet}" Style="{StaticResource DataGridActionButton}" CommandParameter="{Binding}" Command="{Binding DataContext.EditProduct, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                        <Button Grid.Column="1" Content="Delete" Tag="{StaticResource ImperialRed}" Style="{StaticResource DataGridActionButton}" CommandParameter="{Binding}" Command="{Binding DataContext.DeleteProduct, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </ScrollViewer>
+            <!-- Button Panel -->
+            <Border Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource ButtonPanelBorder}">
+                <StackPanel>
+                    <Button Tag="Regular_ArrowAltCircleDown" Style="{StaticResource SquareButton50}" Command="{Binding RefreshData}" ToolTip="Refresh"/>
+                    <Button Tag="Solid_Plus" Style="{StaticResource SquareButton50}" Command="{Binding AddProduct}" ToolTip="Add product"/>
+                    <Button Tag="Solid_WineGlassAlt" Style="{StaticResource SquareButton50}" Command="{Binding ModifyUnit}" ToolTip="Modify measure unit"/>
+                    <Button Tag="Regular_ObjectGroup" Style="{StaticResource SquareButton50}" Command="{Binding ModifyCategory}" ToolTip="Modify category group"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

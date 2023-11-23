@@ -72,25 +72,65 @@ INSERT INTO Password (AccountID, Value, CanChanged, WhoChanged) VALUES (1, N'jGl
 CREATE TABLE Supplier (
 	SupplierID INT IDENTITY(1,1) PRIMARY KEY,
 	CompanyName NVARCHAR(50) NOT NULL,
+	CompanyNIP NVARCHAR(10) NOT NULL,
+	Address NVARCHAR(60) NOT NULL,
+	City NVARCHAR(50) NOT NULL,
 	ContactName NVARCHAR(50),
 	ContactTitle NVARCHAR(50),
-	Address NVARCHAR(60),
-	City NVARCHAR(20),
 	Phone NVARCHAR(24),
-	HomePage NVARCHAR(MAX))
+	HomePage NVARCHAR(MAX),
+	WhoChanged NVARCHAR(50) NOT NULL,
+	LastModified DATE DEFAULT GETDATE() NOT NULL)
 
 CREATE TABLE SupplierArchive (
 	CompanyName NVARCHAR(50) NOT NULL,
+	CompanyNIP NVARCHAR(10) NOT NULL,
+	Address NVARCHAR(60) NOT NULL,
+	City NVARCHAR(50) NOT NULL,
 	ContactName NVARCHAR(50),
 	ContactTitle NVARCHAR(50),
-	Address NVARCHAR(60),
-	City NVARCHAR(20),
 	Phone NVARCHAR(24),
 	HomePage NVARCHAR(MAX),
+	WhoChanged NVARCHAR(50) NOT NULL,
+	LastModified DATE NOT NULL,
 	SupplierID INT NOT NULL,
 	ArchiveID INT IDENTITY(1,1) PRIMARY KEY)
 
 CREATE TRIGGER RemoveSupplierTrigger ON Supplier
 AFTER DELETE AS
-	INSERT INTO SupplierArchive (CompanyName, ContactName, ContactTitle, Address, City, Phone, HomePage, SupplierID) SELECT CompanyName, ContactName, ContactTitle, Address, City, Phone, HomePage, SupplierID FROM deleted
+	INSERT INTO SupplierArchive (CompanyName, CompanyNIP, Address, City, ContactName, ContactTitle, Phone, HomePage, WhoChanged, LastModified, SupplierID)
+		SELECT CompanyName, CompanyNIP, Address, City, ContactName, ContactTitle, Phone, HomePage, WhoChanged, LastModified, SupplierID FROM deleted
+*/
+
+/* Product Aspect
+
+CREATE TABLE MeasureUnit (
+	UnitID INT IDENTITY(1,1) PRIMARY KEY,
+	Code NVARCHAR(5) NOT NULL )
+
+CREATE TABLE ProductCategory (
+	CategoryID INT IDENTITY(1,1) PRIMARY KEY,
+	CategoryName NVARCHAR(50) NOT NULL,
+	Description NVARCHAR(MAX) )
+
+CREATE TABLE Product (
+	ProductID INT IDENTITY(1,1) PRIMARY KEY,
+	ProductName NVARCHAR(50) NOT NULL,
+	InStock DECIMAL(9, 4) DEFAULT 0.0 NOT NULL,
+	UnitID INT NOT NULL,
+	CategoryID INT,
+	SupplierID INT,
+	WhoChanged NVARCHAR(50) NOT NULL,
+	LastModified DATE DEFAULT GETDATE() NOT NULL,
+	FOREIGN KEY(UnitID) REFERENCES MeasureUnit(UnitID),
+	FOREIGN KEY(CategoryID) REFERENCES ProductCategory(CategoryID) ON DELETE SET NULL,
+	FOREIGN KEY(SupplierID) REFERENCES Supplier(SupplierID) ON DELETE SET NULL )
+
+CREATE TABLE ProductArchive (
+	ProductName NVARCHAR(50) NOT NULL,
+	UnitCode NVARCHAR(5) NOT NULL,
+	CategoryName NVARCHAR(50),
+	SupplierName NVARCHAR(50),
+	WhoChanged NVARCHAR(50) NOT NULL,
+	LastModified DATE NOT NULL )
 */

@@ -12,6 +12,22 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="CategoryButton" TargetType="Button">
+        <Setter Property="Foreground" Value="{StaticResource EerieBlack}"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontFamily" Value="{StaticResource MainFont}"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Margin" Value="0, 5"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border BorderBrush="{StaticResource UltraViolet}" Background="{StaticResource PowderBlue}" Padding="20, 5">
+                        <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style x:Key="ItemMenuListView" TargetType="ListView">
         <Setter Property="Focusable" Value="False"/>
         <Setter Property="Background" Value="Transparent"/>
@@ -53,5 +69,20 @@
                 <Setter Property="Cursor" Value="Hand"/>
             </Trigger>
         </Style.Triggers>
+    </Style>
+    <Style x:Key="CategorySelectControl" TargetType="ItemsControl">
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Button Style="{StaticResource CategoryButton}"
+                            Content="{Binding Path=Name}" Command="{Binding Path=Tag, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding Path=CategoryID}"/>
+                    <DataTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Cursor" Value="Hand"/>
+                        </Trigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 </ResourceDictionary>

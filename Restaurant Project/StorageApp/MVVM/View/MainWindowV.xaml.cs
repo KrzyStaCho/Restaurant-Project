@@ -29,9 +29,7 @@ namespace StorageApp.MVVM.View
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var viewModel = new MainWindowVM(this);
-            viewModel.RequestClose += () => Close();
-            DataContext = viewModel;
+            new MainWindowVM(this);
         }
 
         private void StartClock()

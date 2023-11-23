@@ -10,9 +10,13 @@ namespace StorageApp.MVVM.ViewModel.Core
 {
     public class BaseWindowVM : BaseViewModel
     {
-        public event Action? RequestClose;
+        protected Window mainWindow;
 
-        private Window mainWindow;
+        #region Data Binding
+
+        public string WindowTitle { get; protected set; }
+
+        #endregion
 
         #region Commands
         #region Close Command
@@ -20,15 +24,18 @@ namespace StorageApp.MVVM.ViewModel.Core
         public ICommand CloseCommand { get; }
         public void ExecuteClose(object? parameter)
         {
-            if (RequestClose != null) { RequestClose(); }
+            mainWindow.Close();
         }
 
         #endregion
         #endregion
 
-        public BaseWindowVM(Window window)
+        public BaseWindowVM(Window window, string title)
         {
             mainWindow = window;
+            WindowTitle = title;
+
+            mainWindow.DataContext = this;
             CloseCommand = new BaseCommand(ExecuteClose);
         }
     }

@@ -30,7 +30,7 @@
                 <!-- SearchBox -->
                 <RowDefinition Height="50"/>
                 <!-- Data Grid -->
-                <RowDefinition/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <!-- SearchBox -->
             <StackPanel Grid.Column="0" Grid.Row="0" Style="{StaticResource SearchBoxPanel}">
@@ -39,10 +39,11 @@
             </StackPanel>
             <!-- Data Grid -->
             <ScrollViewer Grid.Column="0" Grid.Row="1" Style="{StaticResource DataGridScroll}">
-                <DataGrid Grid.Column="0" ItemsSource="{Binding SupplyList}">
+                <DataGrid ItemsSource="{Binding SupplyList}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="#" MinWidth="20" Width="auto" Binding="{Binding SupplierID}"/>
                         <DataGridTextColumn Header="Company name" Width="*" Binding="{Binding CompanyName}"/>
+                        <DataGridTextColumn Header="Company NIP" Width="*" Binding="{Binding CompanyNIP}"/>
                         <DataGridTextColumn Header="Contact title" Width="*" Binding="{Binding ContactTitle}"/>
                         <DataGridTextColumn Header="Phone" Width="*" Binding="{Binding Phone}"/>
                         <DataGridTemplateColumn Header="Action" Width="*">

@@ -31,6 +31,7 @@ namespace StorageApp.MVVM.ViewModel
 
         private readonly string _version = "2.0";
         private ActiveUserModel? _activeUser;
+        private int changesInDB;
 
         private List<BaseViewModel> viewModelList;
         private UserControl currentChildView;
@@ -77,6 +78,19 @@ namespace StorageApp.MVVM.ViewModel
                 return viewModel;
             }
         }
+        private ProductVM ProductViewModel
+        {
+            get
+            {
+                ProductVM? viewModel = FindInstanceVM<ProductVM>() as ProductVM;
+                if (viewModel == null)
+                {
+                    viewModel = new ProductVM();
+                    viewModelList.Add(viewModel);
+                }
+                return viewModel;
+            }
+        }
 
         #endregion
 
@@ -117,6 +131,13 @@ namespace StorageApp.MVVM.ViewModel
                 return "Version " + _version;
             }
         }
+        public string ChangesInDatabase
+        {
+            get
+            {
+                return "Changes in DB: " + changesInDB;
+            }
+        }
         public List<ItemMenu> Menu
         {
             get { return _menu; }
@@ -144,6 +165,7 @@ namespace StorageApp.MVVM.ViewModel
         public ICommand SwitchToLogInView { get; }
         public ICommand SwitchToDashboardView { get; }
         public ICommand SwitchToSupplierView { get; }
+        public ICommand SwitchToProductView { get; }
 
         private void ExecuteSwitchToLogIn(object? parameter)
         {
@@ -169,6 +191,14 @@ namespace StorageApp.MVVM.ViewModel
             if (CurrentChildView != null && CurrentChildView is SupplierV) return;
             var view = new SupplierV();
             var viewModel = SupplierViewModel;
+            view.DataContext = viewModel;
+            CurrentChildView = view;
+        }
+        private void ExecuteSwitchToProduct(object? parameter)
+        {
+            if (CurrentChildView != null && CurrentChildView is ProductV) return;
+            var view = new ProductV();
+            var viewModel = ProductViewModel;
             view.DataContext = viewModel;
             CurrentChildView = view;
         }
@@ -198,6 +228,15 @@ namespace StorageApp.MVVM.ViewModel
             ItemMenu menu0 = new ItemMenu("Start", menuStart, HomeIconName);
 
             #endregion
+            #region Product Menu
+
+            List<SubItemMenu> menuProduct = new List<SubItemMenu>()
+            {
+                new SubItemMenu("Product", SwitchToProductView)
+            };
+            ItemMenu menu1 = new ItemMenu("Storage", menuProduct, CarrotIconName);
+
+            #endregion
             #region SupplyDelivery Menu
 
             List<SubItemMenu> menuDelivery = new List<SubItemMenu>()
@@ -207,9 +246,8 @@ namespace StorageApp.MVVM.ViewModel
             ItemMenu menu2 = new ItemMenu("Supply", menuDelivery, NewspaperIconName);
 
             #endregion
-            //TODO: ...
 
-            _menu = new List<ItemMenu>() { menu0, menu2 };
+            _menu = new List<ItemMenu>() { menu0, menu1, menu2 };
             OnPropertyChanged(nameof(Menu));
         }
 
@@ -219,21 +257,37 @@ namespace StorageApp.MVVM.ViewModel
             return viewModel;
         }
 
+        public Window GetWindow()
+        {
+            return mainWindow;
+        }
+        private void SetChangesInDB(int newInt)
+        {
+            changesInDB = newInt;
+            OnPropertyChanged(nameof(ChangesInDatabase));
+        }
+        public void IncrementChangesInDB()
+        {
+            SetChangesInDB(changesInDB + 1);
+        }
+
         #endregion
 
         public MainWindowVM(Window window)
-            : base(window)
+            : base(window, "Storage Application")
         {
             instance = this;
             DatabaseInstance = new RestaurantEntity();
             viewModelList = new List<BaseViewModel>();
             _activeUser = null;
+            changesInDB = 0;
 
             #region Init Commands
 
             SwitchToLogInView = new BaseCommand(ExecuteSwitchToLogIn);
             SwitchToDashboardView = new BaseCommand(ExecuteSwitchToDashboard, CanExecuteSwitchView);
             SwitchToSupplierView = new BaseCommand(ExecuteSwitchToSupplier, CanExecuteSwitchView);
+            SwitchToProductView = new BaseCommand(ExecuteSwitchToProduct, CanExecuteSwitchView);
 
             #endregion
 
