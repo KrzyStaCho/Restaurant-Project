@@ -16,6 +16,10 @@ namespace ProjectLibrary.Repository.Entity
         public string GroupName { get; set; } = null!;
         [Column(TypeName = "date")]
         public DateTime? LastOnline { get; set; }
+        [StringLength(50)]
+        public string WhoChanged { get; set; } = null!;
+        [Column(TypeName = "date")]
+        public DateTime LastModified { get; set; }
         [Column("AccountID")]
         public int AccountId { get; set; }
         [Key]

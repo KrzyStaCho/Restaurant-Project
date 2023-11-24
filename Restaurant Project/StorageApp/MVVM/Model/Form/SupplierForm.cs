@@ -181,6 +181,7 @@ namespace StorageApp.MVVM.Model.Form
         {
             //Check if urgent data is not empty
             if (IsDataEmpty()) { Error = EmptyBoxesError; return false; }
+            TrimData();
             
             //Check if CompanyName, Address, City has more than 2 letters
             if (CompanyName.Length < 3) { Error = "Company Name " + NotEnoughtLetterStandartError; return false; }
@@ -231,6 +232,7 @@ namespace StorageApp.MVVM.Model.Form
 
         public SupplierForm()
         {
+            EditedSupplier = null;
             Clear();
         }
     }

@@ -79,10 +79,10 @@ namespace StorageApp.MVVM.ViewModel
             addWindow.ShowDialog();
 
             //Check if user confirm changes
-            if (!addSupplierVM.IsConfirmed) return;
+            if (addSupplierVM.FormState != Model.Form.FormStateEnum.CONFIRM) return;
 
             //Add user info to supplier
-            Supplier toAddSupplier = addSupplierVM.DataForm.GetFilledSupplier();
+            Supplier toAddSupplier = addSupplierVM.FormModel.GetFilledSupplier();
             toAddSupplier.WhoChanged = mainVM.ActiveUser.Username;
             toAddSupplier.LastModified = DateTime.Now.Date;
 
@@ -107,10 +107,10 @@ namespace StorageApp.MVVM.ViewModel
             editWindow.ShowDialog();
 
             //Check if user confirm changes
-            if (!editSupplierVM.IsConfirmed) return;
+            if (editSupplierVM.FormState != Model.Form.FormStateEnum.CONFIRM) return;
 
             //Add user info to supplier
-            Supplier toEditSupplier = editSupplierVM.DataForm.GetFilledSupplier();
+            Supplier toEditSupplier = editSupplierVM.FormModel.GetFilledSupplier();
             toEditSupplier.WhoChanged = mainVM.ActiveUser.Username;
             toEditSupplier.LastModified = DateTime.Now.Date;
 

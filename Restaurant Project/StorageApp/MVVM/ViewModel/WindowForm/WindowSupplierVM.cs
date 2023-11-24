@@ -23,12 +23,12 @@ namespace StorageApp.MVVM.ViewModel.WindowForm
         #endregion
         #region Public Fields
 
-        public bool IsConfirmed;
+        public FormStateEnum FormState;
 
         #endregion
         #region Data Binding
 
-        public SupplierForm DataForm { get; private set; }
+        public SupplierForm FormModel { get; private set; }
 
         #endregion
         #region Commands
@@ -37,15 +37,14 @@ namespace StorageApp.MVVM.ViewModel.WindowForm
 
         private void ExecuteConfirmData(object? parameter)
         {
-            if (!DataForm.CheckData()) return;
-            DataForm.TrimData();
-            IsConfirmed = true;
+            if (!FormModel.CheckData()) return;
+            FormState = FormStateEnum.CONFIRM;
             CloseCommand.Execute(null);
         }
 
         private bool CanExecuteConfirmData(object? parameter)
         {
-            return !(DataForm.IsDataEmpty());
+            return !(FormModel.IsDataEmpty());
         }
 
         #endregion
@@ -60,7 +59,7 @@ namespace StorageApp.MVVM.ViewModel.WindowForm
 
             mainVM = MainWindowVM.Instance;
             database = mainVM.DatabaseInstance;
-            IsConfirmed = false;
+            FormState = FormStateEnum.CANCEL;
 
             #region Init Commands
 
@@ -68,13 +67,13 @@ namespace StorageApp.MVVM.ViewModel.WindowForm
 
             #endregion
 
-            DataForm = new SupplierForm();
+            FormModel = new SupplierForm();
             if (model != null)
             {
                 Supplier? rawModel = database.Suppliers.FirstOrDefault(sp => (sp.SupplierId == model.SupplierID));
                 if (rawModel == null) return;
 
-                DataForm.FillData(rawModel);
+                FormModel.FillData(rawModel);
             }
         }
     }

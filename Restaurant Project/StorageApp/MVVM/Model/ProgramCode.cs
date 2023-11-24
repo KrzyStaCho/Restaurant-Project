@@ -10,5 +10,6 @@ namespace StorageApp.MVVM.Model
     {
         public static readonly string LogInPermissionCode = "LogST";
         public static readonly string ModifySupplierCode = "ModST_SP";
+        public static readonly string ModifyProductCode = "ModST_PC";
     }
 }

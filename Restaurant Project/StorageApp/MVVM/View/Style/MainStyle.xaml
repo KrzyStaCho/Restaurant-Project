@@ -367,4 +367,20 @@
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="Margin" Value="0, 0, 0, 10"/>
     </Style>
+
+    <Style x:Key="CategoryComboBox" TargetType="ComboBox">
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="Width" Value="150"/>
+        <Setter Property="Background" Value="{StaticResource AntiFlashWhite}"/>
+        <Setter Property="Margin" Value="0, 0, 20, 0"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+    </Style>
 </ResourceDictionary>

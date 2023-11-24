@@ -93,9 +93,24 @@ namespace StorageApp.MVVM.Helper
         }
         public static List<ProductModel> SearchProductsByCategory(RestaurantEntity database, int categoryID)
         {
-            List<ProductModel>? products = database.Products.Include(p => p.Category).Where(p => (p.CategoryId == null) ? false : (p.CategoryId == categoryID)).Include(p => p.Unit)
+            List<ProductModel>? products = database.Products.Include(p => p.Category).Where(p => (p.CategoryId == null) ? false : (p.CategoryId == categoryID)).Take(100).Include(p => p.Unit)
                 .Include(p => p.Supplier).Select(ParseRawProduct).ToList();
             return (products == null) ? new List<ProductModel>() : products;
+        }
+        public static List<ProductCategoryModel> GetProductCategories(RestaurantEntity database)
+        {
+            List<ProductCategoryModel>? categories = database.ProductCategories.Select(pc => new ProductCategoryModel()
+            {
+                ID = pc.CategoryId,
+                Name = pc.CategoryName,
+                Description = (pc.Description == null) ? string.Empty : pc.Description
+            }).ToList();
+            return (categories == null) ? new List<ProductCategoryModel>() : categories;
+        }
+        public static ProductCategory GetProductCategory(RestaurantEntity database, int categoryID)
+        {
+            ProductCategory? category = database.ProductCategories.FirstOrDefault(pc => pc.CategoryId == categoryID);
+            return (category == null) ? new ProductCategory() : category;
         }
 
         #endregion

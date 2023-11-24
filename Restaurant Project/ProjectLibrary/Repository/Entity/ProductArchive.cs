@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ProjectLibrary.Repository.Entity
 {
-    [Keyless]
     [Table("ProductArchive")]
     public partial class ProductArchive
     {
@@ -22,5 +21,10 @@ namespace ProjectLibrary.Repository.Entity
         public string WhoChanged { get; set; } = null!;
         [Column(TypeName = "date")]
         public DateTime LastModified { get; set; }
+        [Column("ProductID")]
+        public int ProductId { get; set; }
+        [Key]
+        [Column("ArchiveID")]
+        public int ArchiveId { get; set; }
     }
 }

@@ -1,8 +1,14 @@
-﻿using ProjectLibrary.Repository.Context;
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore;
+using ProjectLibrary.Repository.Context;
+using ProjectLibrary.Repository.Entity;
 using StorageApp.MVVM.Helper;
+using StorageApp.MVVM.Model;
 using StorageApp.MVVM.Model.DataGrid;
 using StorageApp.MVVM.Model.Menu;
+using StorageApp.MVVM.View.WindowForm;
 using StorageApp.MVVM.ViewModel.Core;
+using StorageApp.MVVM.ViewModel.WindowForm;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +42,7 @@ namespace StorageApp.MVVM.ViewModel
             set
             {
                 _categoryMenu = value;
-                OnPropertyChanged(nameof(CategoryMenu));
+                OnPropertyChanged(nameof(CategoryList));
             }
         }
         public List<ProductModel> ProductList
@@ -86,6 +92,40 @@ namespace StorageApp.MVVM.ViewModel
 
             ProductList = ModelConstructor.SearchProductsByCategory(database, (int)categoryID);
         }
+        private void ExecuteModifyCategory(object? parameter)
+        {
+            Window modifyWindow = new WindowProductCategoryForm();
+            Window owner = mainVM.GetWindow();
+            WindowProductCategoryVM modifyCategoryVM = new WindowProductCategoryVM(modifyWindow, owner);
+
+            modifyWindow.ShowDialog();
+
+            //Check if user confirm changes and do target action
+            switch(modifyCategoryVM.FormState)
+            {
+                case Model.Form.FormStateEnum.CREATE:
+                    AddCategory(modifyCategoryVM.FormModel.GetFilledCategory());
+                    LoadCategoryMenu();
+                    break;
+                case Model.Form.FormStateEnum.EDIT:
+                    EditCategory(modifyCategoryVM.FormModel.GetFilledCategory());
+                    LoadCategoryMenu();
+                    break;
+                case Model.Form.FormStateEnum.DELETE:
+                    DeleteCategory(modifyCategoryVM.FormModel.GetFilledCategory());
+                    LoadCategoryMenu();
+                    break;
+                case Model.Form.FormStateEnum.CANCEL:
+                default:
+                    return;
+            }
+        }
+
+        private bool CanExecuteModifyData(object? parameter)
+        {
+            if (mainVM.ActiveUser == null) return false;
+            return mainVM.ActiveUser.HasPerm(ProgramCode.ModifyProductCode);
+        }
 
         #endregion
         #region Functions
@@ -105,6 +145,31 @@ namespace StorageApp.MVVM.ViewModel
             CategoryList = ModelConstructor.GetCategoryMenu(database);
         }
 
+        #region Modify Category Help Function
+
+        private void AddCategory(ProductCategory category)
+        {
+            category.CategoryId = 0;
+            database.ProductCategories.Add(category);
+            mainVM.IncrementChangesInDB();
+            database.SaveChanges();
+        }
+        private void EditCategory(ProductCategory category)
+        {
+            mainVM.IncrementChangesInDB();
+            database.SaveChanges();
+        }
+        private void DeleteCategory(ProductCategory category)
+        {
+            EntityEntry<ProductCategory> entityEntry = database.ProductCategories.Attach(category);
+            entityEntry.State = EntityState.Deleted;
+
+            mainVM.IncrementChangesInDB();
+            database.SaveChanges();
+        }
+
+        #endregion
+
         #endregion
 
         public ProductVM()
@@ -117,6 +182,8 @@ namespace StorageApp.MVVM.ViewModel
             RefreshData = new BaseCommand(ExecuteRefreshData);
             SearchData = new BaseCommand(ExecuteSearchData);
             FromCategoryData = new BaseCommand(ExecuteFromCategoryData);
+
+            ModifyCategory = new BaseCommand(ExecuteModifyCategory, CanExecuteModifyData);
 
             #endregion
 

@@ -45,6 +45,7 @@
             <!-- Category Panel -->
             <ScrollViewer Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource NavSideScroll}">
                 <StackPanel Margin="10">
+                    <Label Content="Category:" Style="{StaticResource HeaderLabel}"/>
                     <!-- Generating category button -->
                     <ItemsControl ItemsSource="{Binding CategoryList}" Tag="{Binding FromCategoryData}" Style="{StaticResource CategorySelectControl}"/>
                 </StackPanel>

@@ -56,7 +56,7 @@ namespace ProjectLibrary.Repository.Context
             modelBuilder.Entity<AccountArchive>(entity =>
             {
                 entity.HasKey(e => e.ArchiveId)
-                    .HasName("PK__AccountA__33A73E7721E54D75");
+                    .HasName("PK__AccountA__33A73E77D21C5270");
             });
 
             modelBuilder.Entity<AccountGroup>(entity =>
@@ -129,6 +129,12 @@ namespace ProjectLibrary.Repository.Context
                     .HasForeignKey(d => d.UnitId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Product__UnitID__6C190EBB");
+            });
+
+            modelBuilder.Entity<ProductArchive>(entity =>
+            {
+                entity.HasKey(e => e.ArchiveId)
+                    .HasName("PK__ProductA__33A73E77E829FB26");
             });
 
             modelBuilder.Entity<ProductCategory>(entity =>

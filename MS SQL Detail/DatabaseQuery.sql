@@ -31,6 +31,8 @@ CREATE TABLE AccountArchive (
 	Password NVARCHAR(MAX) NOT NULL,
 	GroupName NVARCHAR(50) NOT NULL,
 	LastOnline DATE,
+	WhoChanged NVARCHAR(50) NOT NULL,
+	LastModified DATE NOT NULL,
 	AccountID INT NOT NULL,
 	ArchiveID INT IDENTITY(1,1) PRIMARY KEY)
 
@@ -48,18 +50,9 @@ CREATE TABLE AccountGroupPerm (
 CREATE TRIGGER RemoveAccountTrigger ON Password
 AFTER DELETE AS
 	DECLARE @accountID INT
-	DECLARE @groupID INT
-	DECLARE @username NVARCHAR(50)
-	DECLARE @pass NVARCHAR(MAX)
-	DECLARE @groupName NVARCHAR(50)
-	DECLARE @lastOnline DATE
 	SET @accountID = (SELECT AccountID FROM deleted)
-	SET @groupID = (SELECT GroupID FROM Account WHERE AccountID = @accountID)
-	SET @username = (SELECT Username FROM Account WHERE AccountID = @accountID)
-	SET @pass = (SELECT Value FROM deleted)
-	SET @groupName = (SELECT GroupName FROM AccountGroup WHERE GroupID = @groupID)
-	SET @lastOnline = (SELECT LastOnline FROM Account WHERE AccountID = @accountID)
-	INSERT INTO AccountArchive (Username, Password, GroupName, LastOnline, AccountID) VALUES (@username, @pass, @groupName, @lastOnline, @accountID)
+	INSERT INTO AccountArchive (Username, Password, GroupName, LastOnline, WhoChanged, LastModified, AccountID)
+	SELECT A.Username, P.Value, AG.GroupName, A.LastOnline, A.WhoChanged, GETDATE(), A.AccountID FROM Account AS A LEFT JOIN Password AS P ON A.AccountID = P.AccountID LEFT JOIN AccountGroup AS AG ON A.GroupID = AG.GroupID
 	DELETE FROM Account WHERE AccountID = @accountID
 
 INSERT INTO AccountGroup (GroupName, IsAdmin, CanChanged, WhoChanged) VALUES (N'System Admin', 1, 0, N'SysAdmin')
@@ -99,7 +92,7 @@ CREATE TABLE SupplierArchive (
 CREATE TRIGGER RemoveSupplierTrigger ON Supplier
 AFTER DELETE AS
 	INSERT INTO SupplierArchive (CompanyName, CompanyNIP, Address, City, ContactName, ContactTitle, Phone, HomePage, WhoChanged, LastModified, SupplierID)
-		SELECT CompanyName, CompanyNIP, Address, City, ContactName, ContactTitle, Phone, HomePage, WhoChanged, LastModified, SupplierID FROM deleted
+		SELECT CompanyName, CompanyNIP, Address, City, ContactName, ContactTitle, Phone, HomePage, WhoChanged, GETDATE(), SupplierID FROM deleted
 */
 
 /* Product Aspect
@@ -132,5 +125,16 @@ CREATE TABLE ProductArchive (
 	CategoryName NVARCHAR(50),
 	SupplierName NVARCHAR(50),
 	WhoChanged NVARCHAR(50) NOT NULL,
-	LastModified DATE NOT NULL )
+	LastModified DATE NOT NULL,
+	ProductID INT NOT NULL,
+	ArchiveID INT IDENTITY(1,1) PRIMARY KEY)
+
+CREATE TRIGGER RemoveProductTrigger ON Product
+AFTER DELETE AS
+	INSERT INTO ProductArchive (ProductName, UnitCode, CategoryName, SupplierName, WhoChanged, LastModified, ProductID)
+		SELECT d.ProductName, mu.Code, pc.CategoryName, s.CompanyName, d.WhoChanged, GETDATE(), d.ProductID
+			FROM deleted as d
+			LEFT JOIN MeasureUnit AS mu ON d.UnitID = mu.UnitID
+			LEFT JOIN ProductCategory AS pc ON d.CategoryID = pc.CategoryID
+			LEFT JOIN Supplier AS s ON d.SupplierID = s.SupplierID
 */
