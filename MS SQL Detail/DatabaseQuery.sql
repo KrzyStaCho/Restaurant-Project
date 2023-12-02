@@ -88,11 +88,6 @@ CREATE TABLE SupplierArchive (
 	LastModified DATE NOT NULL,
 	SupplierID INT NOT NULL,
 	ArchiveID INT IDENTITY(1,1) PRIMARY KEY)
-
-CREATE TRIGGER RemoveSupplierTrigger ON Supplier
-AFTER DELETE AS
-	INSERT INTO SupplierArchive (CompanyName, CompanyNIP, Address, City, ContactName, ContactTitle, Phone, HomePage, WhoChanged, LastModified, SupplierID)
-		SELECT CompanyName, CompanyNIP, Address, City, ContactName, ContactTitle, Phone, HomePage, WhoChanged, GETDATE(), SupplierID FROM deleted
 */
 
 /* Product Aspect
@@ -128,13 +123,4 @@ CREATE TABLE ProductArchive (
 	LastModified DATE NOT NULL,
 	ProductID INT NOT NULL,
 	ArchiveID INT IDENTITY(1,1) PRIMARY KEY)
-
-CREATE TRIGGER RemoveProductTrigger ON Product
-AFTER DELETE AS
-	INSERT INTO ProductArchive (ProductName, UnitCode, CategoryName, SupplierName, WhoChanged, LastModified, ProductID)
-		SELECT d.ProductName, mu.Code, pc.CategoryName, s.CompanyName, d.WhoChanged, GETDATE(), d.ProductID
-			FROM deleted as d
-			LEFT JOIN MeasureUnit AS mu ON d.UnitID = mu.UnitID
-			LEFT JOIN ProductCategory AS pc ON d.CategoryID = pc.CategoryID
-			LEFT JOIN Supplier AS s ON d.SupplierID = s.SupplierID
 */

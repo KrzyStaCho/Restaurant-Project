@@ -1,0 +1,79 @@
+﻿<UserControl x:Class="StorageApplication.MVVM.View.SupplierV"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
+             xmlns:view="clr-namespace:StorageApplication.MVVM.View"
+             xmlns:viewmodel="clr-namespace:StorageApplication.MVVM.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:SupplierVM}"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1000" Background="{StaticResource AntiFlashWhite}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="120"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Style="{StaticResource LogoBorder}">
+            <StackPanel Orientation="Horizontal" Tag="{StaticResource LightMaize}" Style="{StaticResource CenteredPanel}">
+                <fa:ImageAwesome Icon="Regular_IdCard" Style="{StaticResource HeaderIcon}"/>
+                <Label Content="Supplier panel" Style="{StaticResource HeaderLabel}"/>
+            </StackPanel>
+        </Border>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <!-- Data Grid -->
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="75"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <!-- Search Box -->
+                <RowDefinition Height="50"/>
+                <!-- Data Grid -->
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <!-- Search Box -->
+            <StackPanel Grid.Column="0" Grid.Row="0" Style="{StaticResource SearchBoxPanel}">
+                <TextBox Text="{Binding SearchBox, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SearchBox}"/>
+                <Button Style="{StaticResource SearchButton}" Command="{Binding SearchData}"/>
+            </StackPanel>
+            <!-- Data Grid -->
+            <ScrollViewer Grid.Column="0" Grid.Row="1" Style="{StaticResource DataGridScroll}">
+                <DataGrid ItemsSource="{Binding SupplierList}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="#" MinWidth="20" Width="auto" Binding="{Binding SupplierID}"/>
+                        <DataGridTextColumn Header="Company name" Width="2*" Binding="{Binding CompanyName}"/>
+                        <DataGridTextColumn Header="Company NIP" Width="2*" Binding="{Binding CompanyNIP}"/>
+                        <DataGridTextColumn Header="Contact title" Width="2*" Binding="{Binding ContactTitle}"/>
+                        <DataGridTextColumn Header="Phone" Width="2*" Binding="{Binding Phone}"/>
+                        <DataGridTemplateColumn Header="Action" Width="2*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Button Grid.Column="0" Content="Edit" Tag="{StaticResource UltraViolet}" Style="{StaticResource DataGridActionButton}" CommandParameter="{Binding}" Command="{Binding DataContext.EditSupplier, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                        <Button Grid.Column="1" Content="Delete" Tag="{StaticResource ImperialRed}" Style="{StaticResource DataGridActionButton}" CommandParameter="{Binding}" Command="{Binding DataContext.DeleteSupplier, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </ScrollViewer>
+            <!-- Button Panel -->
+            <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="2">
+                <!-- Refresh -->
+                <Button Style="{StaticResource SideButton}" ToolTip="Refresh suppliers" Command="{Binding RefreshData}">
+                    <fa:ImageAwesome Icon="Regular_ArrowAltCircleDown" Style="{StaticResource SideButtonIcon}"/>
+                </Button>
+                <!-- Add supplier -->
+                <Button Style="{StaticResource SideButton}" ToolTip="Add supplier" Command="{Binding AddSupplier}">
+                    <fa:ImageAwesome Icon="Solid_Plus" Style="{StaticResource SideButtonIcon}"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

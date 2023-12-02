@@ -1,0 +1,51 @@
+﻿<Window x:Class="StorageApplication.MVVM.View.WindowForm.WindowProductCategoryForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:fa="http://schemas.fontawesome.com/icons/"
+        xmlns:windowFormV="clr-namespace:StorageApplication.MVVM.View.WindowForm"
+        xmlns:windowFormVM="clr-namespace:StorageApplication.MVVM.ViewModel.WindowForm" d:DataContext="{d:DesignInstance Type=windowFormVM:WindowProductCategoryVM}"
+        mc:Ignorable="d" Icon="../Image/ProductIcon.ico"
+        Title="WindowProductCategoryForm" Height="400" Width="500" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Background="{StaticResource PowderBlue}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <!-- Form Content -->
+            <RowDefinition Height="*"/>
+            <!-- Buttons -->
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <TabControl Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Style="{StaticResource StandartFormTabControl}" DataContext="{Binding FormModel}">
+            <!-- Default data -->
+            <TabItem Padding="0">
+                <TabItem.Header>
+                    <StackPanel Tag="{StaticResource UltraViolet}" Style="{StaticResource TabPanel}">
+                        <fa:ImageAwesome Icon="Solid_Home" Style="{StaticResource TabIcon}"/>
+                        <TextBlock Text="Default" Style="{StaticResource TabTextBlock}"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <AdornerDecorator>
+                    <StackPanel VerticalAlignment="Center">
+                        <!-- Choose category to modify -->
+                        <ComboBox Tag="Choose category to modify:" Style="{StaticResource FormComboBox}" ItemsSource="{Binding CategoryList}" SelectedItem="{Binding SelectedItem}"/>
+                        <!-- Category name -->
+                        <TextBox Text="{Binding CategoryName, ValidatesOnDataErrors=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsEnabled}" Tag="Category name: " Style="{StaticResource LimitedFormTextBox}"/>
+                        <!-- Description -->
+                        <TextBox Text="{Binding Description, ValidatesOnDataErrors=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsEnabled}" Tag="Description: " Style="{StaticResource LimitedFormTextBox}"/>
+                        <!-- Error -->
+                        <TextBlock Text="{Binding Error}" Style="{StaticResource ErrorFormBlock}"/>
+                    </StackPanel>
+                </AdornerDecorator>
+            </TabItem>
+        </TabControl>
+        <Button Grid.Column="0" Grid.Row="1" Content="Confirm" Tag="{StaticResource SteelBlue}" Style="{StaticResource FormButton}" Command="{Binding ConfirmData}"/>
+        <Button Grid.Column="1" Grid.Row="1" Content="Delete" Tag="{StaticResource ImperialRed}" Style="{StaticResource FormButton}" Command="{Binding DeleteData}"/>
+        <Button Grid.Column="2" Grid.Row="1" Content="Cancel" Tag="{StaticResource EerieBlack}" Style="{StaticResource FormButton}" Command="{Binding CloseCommand}"/>
+    </Grid>
+</Window>

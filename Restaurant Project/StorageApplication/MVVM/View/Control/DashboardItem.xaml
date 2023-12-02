@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="StorageApplication.MVVM.View.Control.DashboardItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
+             xmlns:control="clr-namespace:StorageApplication.MVVM.View.Control"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="200">
+    <Border Style="{StaticResource DashboardItemBorder}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Style="{StaticResource MiddlePanel}">
+                <fa:ImageAwesome Icon="{Binding Path=Icon}"/>
+                <Label Content="{Binding Path=Title}" Style="{StaticResource FormLabel}"/>
+            </StackPanel>
+            <Border Grid.Row="1" Style="{StaticResource DashboardInheritBorder}">
+                <ScrollViewer Style="{StaticResource NavSideScroll}">
+                    <TextBlock Text="{Binding Path=Content}" Style="{StaticResource CenteredTextBlock}"/>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </Border>
+</UserControl>

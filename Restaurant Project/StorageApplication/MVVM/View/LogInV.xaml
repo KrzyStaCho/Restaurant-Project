@@ -1,0 +1,65 @@
+﻿<UserControl x:Class="StorageApplication.MVVM.View.LogInV"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:view="clr-namespace:StorageApplication.MVVM.View"
+             xmlns:viewmodel="clr-namespace:StorageApplication.MVVM.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:LogInVM}"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1000" Background="LightGray">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!-- LogIn Form -->
+        <Border Grid.Column="1" Grid.Row="1" Style="{StaticResource LogInBorder}">
+            <Grid DataContext="{Binding FormModel}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Rectangle Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource LogInRectangle}"/>
+                <Image Grid.Column="1" Grid.Row="0" Source="Image/Product.png" Style="{StaticResource LogInLogo}"/>
+                <Border Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Style="{StaticResource LogInFormBorder}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Content="Log In" Style="{StaticResource TitleLabel}"/>
+                        <StackPanel Grid.Row="1" Style="{StaticResource CenteredPanel}">
+                            <!-- Username -->
+                            <TextBox Text="{Binding Username, ValidatesOnDataErrors=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Tag="Username:" Style="{StaticResource FormTextBox}"/>
+                            <!-- Password -->
+                            <TextBox Text="{Binding Password, ValidatesOnDataErrors=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Tag="Password:" Style="{StaticResource FormTextBox}"/>
+                            <!-- Error Message -->
+                            <TextBlock Text="{Binding Error}" Style="{StaticResource ErrorFormBlock}"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <!-- Confirm Button -->
+                <Button Grid.Column="1" Grid.Row="3" Command="{Binding ConfirmCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Login"/>
+                        <Label Content="Confirm" Foreground="{StaticResource MaterialDesignPaper}"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
