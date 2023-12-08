@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ProjectLibrary.Repository.Entity;
 
-[Table("ProductCategory")]
-public partial class ProductCategory
+[Table("RecipeCategory")]
+public partial class RecipeCategory
 {
     [Key]
     [Column("CategoryID")]
@@ -19,5 +19,5 @@ public partial class ProductCategory
     public string? Description { get; set; }
 
     [InverseProperty("Category")]
-    public virtual ICollection<Product> Products { get; } = new List<Product>();
+    public virtual ICollection<Recipe> Recipes { get; } = new List<Recipe>();
 }

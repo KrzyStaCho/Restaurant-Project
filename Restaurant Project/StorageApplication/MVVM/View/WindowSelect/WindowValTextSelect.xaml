@@ -1,0 +1,20 @@
+﻿<Window x:Class="StorageApplication.MVVM.View.WindowSelect.WindowValTextSelect"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:fa="http://schemas.fontawesome.com/icons/"
+        mc:Ignorable="d" Icon="../Image/ProductIcon.ico"
+        Title="WindowValTextSelect" Height="250" Width="400" Background="{StaticResource PowderBlue}" WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Content="{Binding HeaderText}" d:Content="Insert ..." Style="{StaticResource TitleLabel}"/>
+        <TextBox Grid.Row="1" Text="{Binding Value, ValidatesOnDataErrors=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Tag="Value" Style="{StaticResource FormTextBox}" Padding="10, 0"/>
+        <Button Grid.Row="2" Tag="{StaticResource SteelBlue}" Content="Confirm" Style="{StaticResource FormButton}" Command="{Binding ConfirmData}"/>
+    </Grid>
+</Window>

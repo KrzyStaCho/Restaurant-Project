@@ -81,6 +81,19 @@ namespace StorageApplication.MVVM.ViewModel
                 return viewModel;
             }
         }
+        private RecipeVM RecipeViewModel
+        {
+            get
+            {
+                RecipeVM? viewModel = FindInstanceVM<RecipeVM>();
+                if (viewModel == null)
+                {
+                    viewModel = new RecipeVM();
+                    viewModelList.Add(viewModel);
+                }
+                return viewModel;
+            }
+        }
 
         #endregion
 
@@ -143,6 +156,7 @@ namespace StorageApplication.MVVM.ViewModel
         public ICommand SwitchToDashboardView { get; }
         public ICommand SwitchToSupplierView { get; }
         public ICommand SwitchToProductView { get; }
+        public ICommand SwitchToRecipeView { get; }
 
         private void ExecuteSwitchToLogIn(object? parameter)
         {
@@ -173,9 +187,17 @@ namespace StorageApplication.MVVM.ViewModel
         }
         private void ExecuteSwitchToProduct(object? parameter)
         {
-            if (CurrentChildView != null && CurrentChildView is  ProductV) return;
+            if (CurrentChildView != null && CurrentChildView is ProductV) return;
             var view = new ProductV();
             var viewModel = ProductViewModel;
+            view.DataContext = viewModel;
+            CurrentChildView = view;
+        }
+        private void ExecuteSwitchToRecipe(object? parameter)
+        {
+            if (CurrentChildView != null && CurrentChildView is RecipeV) return;
+            var view = new RecipeV();
+            var viewModel = RecipeViewModel;
             view.DataContext = viewModel;
             CurrentChildView = view;
         }
@@ -209,7 +231,8 @@ namespace StorageApplication.MVVM.ViewModel
 
             tmpList = new List<SubItemMenu>()
             {
-                new SubItemMenu("Products", SwitchToProductView)
+                new SubItemMenu("Products", SwitchToProductView),
+                new SubItemMenu("Recipes", SwitchToRecipeView)
             };
             itemMenus.Add(new ItemMenu("Storage", PackIconKind.Archive, tmpList));
 
@@ -264,6 +287,7 @@ namespace StorageApplication.MVVM.ViewModel
             SwitchToDashboardView = new BaseCommand(ExecuteSwitchToDashboard, CanExecuteSwitchView);
             SwitchToSupplierView = new BaseCommand(ExecuteSwitchToSupplier, CanExecuteSwitchView);
             SwitchToProductView = new BaseCommand(ExecuteSwitchToProduct, CanExecuteSwitchView);
+            SwitchToRecipeView = new BaseCommand(ExecuteSwitchToRecipe, CanExecuteSwitchView);
 
             #endregion
 

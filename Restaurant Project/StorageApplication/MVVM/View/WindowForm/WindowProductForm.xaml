@@ -54,7 +54,7 @@
                             <Button Grid.Column="1" Style="{StaticResource SearchFormButton}" Command="{Binding GetSupplier}"/>
                         </Grid>
                         <!-- Error -->
-                        <TextBlock Text="" Style="{StaticResource ErrorFormBlock}"/>
+                        <TextBlock Text="{Binding Error}" Style="{StaticResource ErrorFormBlock}"/>
                     </StackPanel>
                 </AdornerDecorator>
             </TabItem>

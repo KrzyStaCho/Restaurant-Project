@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace StorageApplication.MVVM.ViewModel.WindowForm
 {
-    class WindowProductCategoryVM : BaseWindowVM
+    class WindowRecipeCategoryVM : BaseWindowVM
     {
         #region Private Fields
 
@@ -28,7 +28,7 @@ namespace StorageApplication.MVVM.ViewModel.WindowForm
         #endregion
         #region Data Binding
 
-        public ProductCategoryForm FormModel { get; private set; }
+        public RecipeCategoryForm FormModel { get; private set; }
 
         #endregion
         #region Commands
@@ -38,15 +38,11 @@ namespace StorageApplication.MVVM.ViewModel.WindowForm
 
         private void ExecuteConfirmData(object? parameter)
         {
-            if (!CanExecuteConfirmData(null)) return;
-
             FormState = (FormModel.SelectedItem?.FirstItem == -1) ? FormStateEnum.CREATE : FormStateEnum.EDIT;
             CloseCommand.Execute(null);
         }
         private void ExecuteDeleteData(object? parameter)
         {
-            if (!CanExecuteDeleteData(null)) return;
-
             if (FormModel.SelectedItem?.FirstItem == -1)
             {
                 FormModel.Error = "Cannot delete category that hasn't created yet!";
@@ -75,7 +71,7 @@ namespace StorageApplication.MVVM.ViewModel.WindowForm
 
         private List<ObjectPair<int, string>> GetCategories()
         {
-            List<ObjectPair<int, string>> categoryList = DBModelConstructor.GetProductCategoryName(database);
+            List<ObjectPair<int, string>> categoryList = DBModelConstructor.GetRecipeCategoryNames(database);
             categoryList.Add(new ObjectPair<int, string>(-1, "+ New category"));
             return categoryList;
         }
@@ -83,7 +79,7 @@ namespace StorageApplication.MVVM.ViewModel.WindowForm
         {
             if (categoryId == -1) return;
 
-            ProductCategory? category = database.ProductCategories.Find(categoryId);
+            RecipeCategory? category = database.RecipeCategories.Find(categoryId);
             if (category == null) return;
 
             FormModel.FillInput(category);
@@ -91,8 +87,8 @@ namespace StorageApplication.MVVM.ViewModel.WindowForm
 
         #endregion
 
-        public WindowProductCategoryVM(Window window)
-            : base(window, "Modify product category")
+        public WindowRecipeCategoryVM(Window window)
+            : base(window, "Modify recipe categories")
         {
             database = MainWindowVM.DatabaseInstance;
             FormState = FormStateEnum.CANCEL;
@@ -104,7 +100,7 @@ namespace StorageApplication.MVVM.ViewModel.WindowForm
 
             #endregion
 
-            FormModel = new ProductCategoryForm(GetCategories(), LoadCategory);
+            FormModel = new RecipeCategoryForm(GetCategories(), LoadCategory);
         }
     }
 }

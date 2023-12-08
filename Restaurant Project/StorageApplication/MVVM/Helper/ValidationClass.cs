@@ -17,6 +17,7 @@ namespace StorageApplication.MVVM.Helper
         public static readonly string NotEnoughLettersError = " must have 3 or more letters";
         public static readonly string NotEnoughtDigitError = " must have 10 digits";
         public static readonly string OnlyDigitError = " must have only digits";
+        public static readonly string DecimalError = " must be number";
         public static readonly string IncorrectPhone = " must be write like example => (+48)456723189";
         public static readonly string NotEnoughLettersCodeError = " must have 1-5 letters";
 
@@ -77,6 +78,13 @@ namespace StorageApplication.MVVM.Helper
                 return regex.IsMatch(text) ? null : (context + IncorrectPhone);
             }
             catch (Exception) { return (context + IncorrectPhone); }
+        }
+
+        public static string? CheckDecimal(string text, string context)
+        {
+            if (IsEmpty(text)) return (context + EmptyBoxesError);
+            if (!decimal.TryParse(text, out _)) return (context + DecimalError);
+            return null;
         }
 
         public static string? CheckComboBox(object? value, string context)

@@ -64,7 +64,7 @@
                 </DataGrid>
             </ScrollViewer>
             <!-- Button Panel -->
-            <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="2">
+            <StackPanel Grid.Column="1" Grid.Row="1">
                 <!-- Refresh -->
                 <Button Style="{StaticResource SideButton}" ToolTip="Refresh suppliers" Command="{Binding RefreshData}">
                     <fa:ImageAwesome Icon="Regular_ArrowAltCircleDown" Style="{StaticResource SideButtonIcon}"/>

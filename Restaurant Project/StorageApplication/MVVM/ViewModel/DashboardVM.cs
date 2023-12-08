@@ -40,6 +40,7 @@ namespace StorageApplication.MVVM.ViewModel
             #region Storage Stats
 
             content = "Products count: " + database.Products.Count().ToString() + Environment.NewLine;
+            content += "Recipe count: " + database.Recipes.Count().ToString() + Environment.NewLine;
             StorageStatsItem = new DashItem(EFontAwesomeIcon.Solid_Boxes, "Storage stats", content);
 
             #endregion

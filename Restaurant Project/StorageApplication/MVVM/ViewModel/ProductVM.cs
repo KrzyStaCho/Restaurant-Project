@@ -253,7 +253,7 @@ namespace StorageApplication.MVVM.ViewModel
         }
         private void LoadCategoryMenu()
         {
-            CategoryList = DBModelConstructor.GetCategoryName(database);
+            CategoryList = DBModelConstructor.GetProductCategoryName(database);
         }
 
         #region Modify Category Help Function

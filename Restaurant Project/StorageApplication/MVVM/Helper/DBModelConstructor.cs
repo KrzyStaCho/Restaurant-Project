@@ -42,7 +42,7 @@ namespace StorageApplication.MVVM.Helper
             database.SupplierArchives.Add(new SupplierArchive()
             {
                 CompanyName = supplier.CompanyName,
-                CompanyNip = supplier.CompanyName,
+                CompanyNip = supplier.CompanyNip,
                 Address = supplier.Address,
                 City = supplier.City,
                 ContactName = supplier.ContactName,
@@ -78,7 +78,7 @@ namespace StorageApplication.MVVM.Helper
         }
         public static void RemoveProduct(RestaurantEntity database, Product product)
         {
-            //Remove supplier
+            //Remove recipe
             EntityEntry<Product> entry = database.Products.Entry(product);
             entry.State = EntityState.Deleted;
 
@@ -102,7 +102,7 @@ namespace StorageApplication.MVVM.Helper
         {
             return database.ProductCategories.Where(pc => pc.CategoryName.Contains(searching)).ToList();
         }
-        public static List<ObjectPair<int, string>> GetCategoryName(RestaurantEntity database)
+        public static List<ObjectPair<int, string>> GetProductCategoryName(RestaurantEntity database)
         {
             List<ObjectPair<int, string>> categoryNames = database.ProductCategories.Select(pc => new ObjectPair<int, string>(pc.CategoryId, pc.CategoryName)).ToList();
             return (categoryNames ?? new List<ObjectPair<int, string>>());
@@ -122,6 +122,48 @@ namespace StorageApplication.MVVM.Helper
         public static void RemoveMeasureUnit(RestaurantEntity database, MeasureUnit measureUnit)
         {
             EntityEntry<MeasureUnit> entry = database.MeasureUnits.Entry(measureUnit);
+            entry.State = EntityState.Deleted;
+
+            database.SaveChanges();
+        }
+
+        #endregion
+        #region Recipes
+
+        public static List<Recipe> GetRecipe(RestaurantEntity database, string searching = "")
+        {
+            return database.Recipes.Where(r => r.RecipeName.Contains(searching)).Include(r => r.Category).Include(r => r.RecipeDetails).
+                Take(100).ToList();
+        }
+        public static Recipe? GetRecipe(RestaurantEntity database, int recipeId)
+        {
+            return database.Recipes.Include(r => r.Category).Include(r => r.RecipeDetails).ThenInclude(r => r.Product).FirstOrDefault(r => r.RecipeId == recipeId);
+        }
+        public static List<Recipe> GetRecipeByCategory(RestaurantEntity database, int categoryId)
+        {
+            return database.Recipes.Where(r => r.CategoryId == categoryId).Include(r => r.Category).Include(r => r.RecipeDetails).
+                Take(100).ToList();
+        }
+        public static void RemoveRecipe(RestaurantEntity database, Recipe recipe)
+        {
+            //Remove recipe
+            EntityEntry<Recipe> entry = database.Recipes.Entry(recipe);
+            entry.State = EntityState.Deleted;
+
+            database.SaveChanges();
+        }
+
+        public static List<ObjectPair<int, string>> GetRecipeCategoryNames(RestaurantEntity database)
+        {
+            return database.RecipeCategories.Select(rc => new ObjectPair<int, string>(rc.CategoryId, rc.CategoryName)).ToList();
+        }
+        public static List<RecipeCategory> GetRecipeCategories(RestaurantEntity database, string searching = "")
+        {
+            return database.RecipeCategories.Where(rc => rc.CategoryName.Contains(searching)).ToList();
+        }
+        public static void RemoveRecipeCategory(RestaurantEntity database, RecipeCategory category)
+        {
+            EntityEntry<RecipeCategory> entry = database.RecipeCategories.Entry(category);
             entry.State = EntityState.Deleted;
 
             database.SaveChanges();
